@@ -1,0 +1,14 @@
+- name: Copy compose
+  ansible.builtin.copy:
+    src: .  
+    dest: /root/redis
+  tags:
+  - redis
+
+- name: install de redis
+  community.docker.docker_compose:
+    project_src: /root/redis
+    state: present
+    recreate: always
+  tags: 
+  - redis

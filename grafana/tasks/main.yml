@@ -1,0 +1,10 @@
+- name: Copy compose
+  ansible.builtin.copy:
+    src: .  
+    dest: /root/grafana
+
+- name: install de grafana/loki
+  community.docker.docker_compose:
+    project_src: /root/grafana
+    state: present
+    recreate: always

@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  homer:
+    image: b4bz/homer
+    container_name: homer
+    volumes:
+      - /root/assets:/www/assets
+#    ports:
+#      - 8082:8080
+    env_file:
+      - .env
+
+networks:
+  default:
+    name: bridge-user

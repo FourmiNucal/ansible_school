@@ -1,0 +1,9 @@
+---
+- name: shortcut de bureau pour GitLab
+  hosts: all
+
+  tasks:
+  - name: fait un URL shorcut pour GitLab 
+    community.windows.win_shortcut:
+      src: https://git.dinf.ca
+      dest: '%goupilles%\Desktop\GitLab.url'

@@ -1,0 +1,10 @@
+- name: Copy compose
+  ansible.builtin.copy:
+    src: .  
+    dest: /root/server
+
+- name: install du server
+  community.docker.docker_compose:
+    project_src: /root/server
+    state: present
+    recreate: always

@@ -1,0 +1,19 @@
+---
+- name: installation de 3 apps
+  hosts: all
+
+  tasks:
+  - name: Install vscode
+    chocolatey.chocolatey.win_chocolatey:
+      name: vscode
+      state: present
+
+  - name: Install wireshark
+    chocolatey.chocolatey.win_chocolatey:
+      name: wireshark
+      state: present
+
+  - name: Install adobereader
+  chocolatey.chocolatey.win_chocolatey:
+    name: adobereader
+    state: present

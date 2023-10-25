@@ -1,0 +1,10 @@
+- name: Copy compose
+  ansible.builtin.copy:
+    src: .  
+    dest: /root/portainer
+
+- name: install de portainer
+  community.docker.docker_compose:
+    project_src: /root/portainer
+    state: present
+    recreate: always

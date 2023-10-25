@@ -1,0 +1,15 @@
+- name: Copy compose
+  ansible.builtin.copy:
+    src: .  
+    dest: /root/pgsql-repmgr
+  tags: 
+  - pgsql
+
+- name: install de pgsql
+  community.docker.docker_compose:
+    project_src: /root/pgsql-repmgr
+    state: present
+    recreate: always
+  tags: 
+  - pgsql
+    

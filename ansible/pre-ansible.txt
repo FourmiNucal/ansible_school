@@ -1,0 +1,3 @@
+Start-Service -Name "WinRM"
+Set-Service -Name "WinRM" -StartupType "Automatic"
+winrm quickconfig

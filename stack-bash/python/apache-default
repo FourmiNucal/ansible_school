@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ProxyVia Off
+    ProxyPass / unix:/var/www/html/testapp/testapp.sock|uwsgi://uwsgi-uds-testapp/
+    ProxyPassReverse / unix:/var/www/html/testapp/testapp.sock|uwsgi://uwsgi-uds-testapp/
+</VirtualHost>

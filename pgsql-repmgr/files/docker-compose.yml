@@ -1,0 +1,28 @@
+version: '3'
+services:
+  pgsql-sg:
+    image: bitnami/postgresql-repmgr:15
+    container_name: pgsql-sg
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_sg_data:/bitnami/postgresql
+    extra_hosts:
+      - "pgsql-jt:10.2.0.144"
+      - "pgsql-sg:10.2.0.46"
+      - "pgsql-sr:10.2.0.152"
+      - "pgsql-fao:10.2.0.148"
+      - "pgsql-mb:10.2.0.153"
+      - "pgsql-vs:10.2.0.141"
+      - "pgsql-lp:10.2.0.43"
+      - "pgsql-tb:10.2.0.165"
+      - "pgsql-mae:10.2.0.146"
+    env_file:
+      - .env
+
+networks:
+  default:
+    name: bridge-user
+
+volumes:
+  pg_sg_data:

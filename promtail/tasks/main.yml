@@ -1,0 +1,10 @@
+- name: Copy compose
+  ansible.builtin.copy:
+    src: .  
+    dest: /root/promtail
+
+- name: install de promtail
+  community.docker.docker_compose:
+    project_src: /root/promtail
+    state: present
+    recreate: always

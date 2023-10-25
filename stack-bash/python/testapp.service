@@ -1,0 +1,12 @@
+[Unit]
+Description=uWSGI instance to serve testapp
+After=network.target
+
+[Service]
+User=%USER%
+Group=%USER%
+WorkingDirectory=/var/www/html/testapp
+ExecStart=/usr/local/bin/uwsgi --ini testapp.ini
+
+[Install]
+WantedBy=multi-user.target

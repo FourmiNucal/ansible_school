@@ -1,0 +1,158 @@
+---
+# Homepage configuration
+# See https://fontawesome.com/v5/search for icons options
+
+# Optional: Use external configuration file.
+# Using this will ignore remaining config in this file
+# externalConfig: https://example.com/server-luci/config.yaml
+
+title: "Oeuvres"
+subtitle: "Simon Goupille"
+# documentTitle: "Welcome" # Customize the browser tab text
+logo: "assets/icons/favicon.ico"
+# Alternatively a fa icon can be provided:
+# icon: "fas fa-skull-crossbones"
+
+header: true # Set to false to hide the header
+
+footer: false
+
+columns: "4" # "auto" or number (must be a factor of 12: 1, 2, 3, 4, 6, 12)
+connectivityCheck: true # whether you want to display a message when the apps are not accessible anymore (VPN disconnected for example).
+
+# Optional: Proxy / hosting option
+proxy:
+  useCredentials: false # send cookies & authorization headers when fetching service specific data. Set to `true` if you use an authentication proxy. Can be overrided on service level. 
+
+# Set the default layout and color scheme
+defaults:
+  layout: columns # Either 'columns', or 'list'
+  colorTheme: dark # One of 'auto', 'light', or 'dark'
+
+# Optional theming
+theme: default # 'default' or one of the themes available in 'src/assets/themes'.
+
+colors:
+  light:
+    highlight-primary: "#3367d6"
+    highlight-secondary: "#4285f4"
+    highlight-hover: "#5a95f5"
+    background: "#f5f5f5"
+    card-background: "#ffffff"
+    text: "#363636"
+    text-header: "#424242"
+    text-title: "#303030"
+    text-subtitle: "#424242"
+    card-shadow: rgba(0, 0, 0, 0.1)
+    link: "#3273dc"
+    link-hover: "#363636"
+    background-image: "assets/your/light/bg.png"
+  dark:
+    highlight-primary: "#3367d6"
+    highlight-secondary: "#4285f4"
+    highlight-hover: "#5a95f5"
+    background: "#131313"
+    card-background: "#2b2b2b"
+    text: "#eaeaea"
+    text-header: "#ffffff"
+    text-title: "#fafafa"
+    text-subtitle: "#f5f5f5"
+    card-shadow: rgba(0, 0, 0, 0.4)
+    link: "#3273dc"
+    link-hover: "#ffdd57"
+    background-image: "assets/your/dark/bg.png"
+
+# Optional navbar
+# links: [] # Allows for navbar (dark mode, layout, and search) without any links
+links:
+  - name: "Diagramme du projet"
+    logo: "assets/icons/share-icon.jpg"
+    url: "assets/icons/diagramme.png"
+    target: "_blank"
+
+# Services
+# First level array represents a group.
+# Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
+services:
+  - name: "Outils"
+    logo: "assets/icons/tools.png"
+    # A path to an image can also be provided. Note that icon take precedence if both icon and logo are set.
+    # logo: "path/to/logo"
+    items:
+      - name: "Drone"
+        logo: "assets/icons/drone.png"
+        subtitle: "Exécution des pipelines"
+        url: "http://10.2.0.46:8100"
+        target: "_blank"
+      - name: "Grafana Loki"
+        logo: "assets/icons/loki.png"
+        subtitle: "Logs"
+        url: "http://10.2.0.139:3001"
+        target: "_blank"
+      - name: "Harbor"
+        logo: "assets/icons/harbor.png"
+        subtitle: "Registre Docker"
+        url: "https://registry.dinf.ca/"
+        target: "_blank"
+      - name: "PgAdmin"
+        logo: "assets/icons/pgadmin.png"
+        subtitle: "Administration de BD"
+        url: "http://10.2.0.46:8090"
+        target: "_blank"
+      - name: "Portainer"
+        logo: "assets/icons/portainer.png"
+        subtitle: "Serveurs Docker"
+        url: "http://portainer.sg.tvbd.dinf.ca"
+        target: "_blank"
+      - name: "Uptime Kuma"
+        logo: "assets/icons/uptime.png"
+        subtitle: "État des services"
+        url: "http://uptime.sg.tvbd.dinf.ca/"
+        target: "_blank"
+
+  - name: "Oeuvres"
+    logo: "assets/icons/oeuvres.png"
+    items:
+      - name: "GitLab"
+        logo: "assets/icons/gitlab.png"
+        subtitle: "Code source"
+        url: "https://git.dinf.ca/tvbd-infra/oeuvres-sg"
+        target: "_blank"
+      - name: "Rocket.Chat"
+        logo: "assets/icons/rocketchat.png"
+        subtitle: "Canal de discussion"
+        url: "https://chat.dinf.ca/group/oeuvres"
+        target: "_blank"
+      - name: "Swagger"
+        logo: "assets/icons/swagger.png"
+        subtitle: "Documentation"
+        url: "http://10.2.0.133:8085/"
+        target: "_blank"
+
+  - name: "tvbd"
+    logo: "assets/icons/tvbd.png"
+    items:
+      - name: "GitLab"
+        logo: "assets/icons/gitlab.png"
+        subtitle: "Code source"
+        url: "https://git.dinf.ca/tvbd-infra/tvbd-sg"
+        target: "_blank"
+      - name: "tvBD"
+        logo: "assets/icons/home.png"
+        subtitle: "Page d'acceuil"
+        url: "https://sg.tvbd.dinf.ca"
+        target: "_blank"
+
+  - name: "utilisateurs"
+    logo: "assets/icons/utilisateurs.png"
+    items:
+      - name: "GitLab"
+        logo: "assets/icons/gitlab.png"
+        subtitle: "Code source"
+        url: "https://git.dinf.ca/tvbd-infra/utilisateurs-sg"
+        target: "_blank"
+      - name: "Swagger"
+        logo: "assets/icons/swagger.png"
+        subtitle: "Documentation"
+        url: "http://10.2.0.139:8087/"
+        target: "_blank"

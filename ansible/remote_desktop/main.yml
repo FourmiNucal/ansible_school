@@ -1,0 +1,10 @@
+---
+- name: set up de bureau à distance
+  hosts: all
+
+  tasks:
+  - name: Set item Property
+    ansible.windows.win_shell: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
+
+  - name: Fait la règle pour le firewall avec bureau à distance
+    ansible.windows.win_shell: Enable-NetFirewallRule -DisplayGroup "Bureau à distance"

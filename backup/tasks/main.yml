@@ -1,0 +1,160 @@
+#  - name: stop service glusterd
+#   ansible.builtin.service:
+#     name: glusterd
+#     state: stopped
+
+# - name: unmount de /dev/sdc1
+#   ansible.builtin.command: umount /dev/sdc1 -f
+#   ignore_errors: true
+
+- name: Configuration du fuseau horaire
+  community.general.timezone:
+    name: "America/Toronto"
+
+- name: Configuration du service de temps
+  ansible.builtin.replace:
+    path: /etc/systemd/timesyncd.conf
+    regexp: '#NTP='
+    replace: "NTP=0.ca.pool.ntp.org 1.ca.pool.org 2.ca.poo.ntp.org 3.ca.pool.ntp.org"
+
+- name: install de timesyncd
+  ansible.builtin.apt:
+    name: systemd-timesyncd
+
+- name: Application des modifications au service de temps
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: restarted
+
+### INSTALL DOCKER
+
+- name: ajout de la clé GPG officiel
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Repository
+  ansible.builtin.apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu focal stable
+      state: present
+
+- name: install l'engine Docker
+  ansible.builtin.apt:
+    pkg:
+    - docker-ce
+    - docker-ce-cli 
+    - containerd.io 
+    - docker-compose-plugin
+    - python3-pip
+
+- name: Install docker package
+  ansible.builtin.pip:
+    name: docker
+
+- name: Install docker-compose package
+  ansible.builtin.pip:
+    name: docker-compose
+
+### création du network bridge-user et tvbd network
+- name: Create bridge-user
+  community.docker.docker_network:
+    name: bridge-user
+    driver: bridge
+
+- name: Create tvbd-network
+  community.docker.docker_network:
+    name: tvbd-network
+    driver: bridge
+
+## portainer agent
+- name: install de l'agent portainer
+  docker_container:
+    name: portainer_agent
+    image: portainer/agent:alpine
+    recreate: yes
+    exposed_ports:
+      - 9001:9001
+    volumes:
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+
+- name: install du driver loki
+  ansible.builtin.command: docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+  ignore_errors: true
+### driver loki
+# - name: install du driver loki
+#   community.docker.docker_plugin:
+#     plugin_name: grafana/loki-docker-driver:latest
+#     plugin_options: 
+#       ALIAS: loki
+#       GRANT-ALL-PERMISSIONS:
+
+### install de gluster
+- name: install de dependencies
+  ansible.builtin.apt:
+    name: software-properties-common
+
+- name: add the community GlusterFS PPA
+  ansible.builtin.apt_repository:
+    repo: ppa:gluster/glusterfs-10
+
+- name: install du paquet de server gluster
+  ansible.builtin.apt:
+    name: glusterfs-server
+
+### configuration de gluster  
+- name: Start service glusterd, if not started
+  ansible.builtin.service:
+    name: glusterd
+    state: started
+
+- name: Partition the disk 1/2
+  community.general.parted:
+    device: /dev/sdc
+    label: gpt
+    number: 1
+
+- name: Partition the disk 2/2
+  community.general.parted:
+    name: gluster
+    part_start: "0%"
+    part_end: "100%"
+    device: /dev/sdc
+    number: 1
+    label: gpt
+    state: present
+
+- name: Create a ext2 filesystem on /dev/sdc1
+  community.general.filesystem:
+    fstype: xfs
+    force: true
+    dev: /dev/sdc1
+    opts: -i size=512
+
+- name: Add an entry to /etc/fstab
+  ansible.builtin.shell:
+    cmd: echo "/dev/sdc1 /export/sdc1 xfs defaults 0 0" >> /etc/fstab
+
+- name:  Mount partition as a Gluster "brick" 1/3
+  ansible.builtin.file:
+    path: /export/sdc1
+    state: directory
+
+- name: mount partition as a Gluster "brick" 2/3
+  ansible.builtin.command: mount /export/sdc1
+# - name: mount partition as a Gluster "brick" 2/3
+#   ansible.posix.mount:
+#     path: /export/sdc1
+#     state: mounted
+
+- name:  Mount partition as a Gluster "brick" 3/3
+  ansible.builtin.file:
+    state: directory
+    path: /export/sdc1/brick
+
+- name: mount pour les images
+  ansible.builtin.command: mount --types glusterfs 172.16.30.6:/gv_tvbd_media /mnt/glusterfs
+
+# ----------à faire sur un autre docker
+# - name: Ajout d'une brick à mon volume
+#   ansible.builtin.shell:
+#     cmd: gluster volume add-brick gv_tvbd_media replica 4 172.16.30.6:/export/sdc1/brick

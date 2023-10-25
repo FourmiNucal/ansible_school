@@ -1,0 +1,14 @@
+- name: Copy compose
+  ansible.builtin.copy:
+    src: .  
+    dest: /root/pgadmin
+  tags: 
+  - pgadmin
+
+- name: install de PgAdmin
+  community.docker.docker_compose:
+    project_src: /root/pgadmin
+    state: present
+    recreate: always
+  tags: 
+  - pgadmin

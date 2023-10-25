@@ -1,0 +1,10 @@
+- name: Copy compose
+  ansible.builtin.copy:
+    src: .  
+    dest: /root/uptime
+
+- name: install de uptime-kuma
+  community.docker.docker_compose:
+    project_src: /root/uptime
+    state: present
+    recreate: always

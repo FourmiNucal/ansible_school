@@ -1,0 +1,32 @@
+- hosts: docker-4
+  roles:
+    - backup
+    - drone/runner
+  tags: backup
+
+- hosts: docker-1
+  roles:
+    - pgAdmin
+    - pgsql-repmgr
+    - drone/server 
+    - drone/runner
+    - promtail
+
+- hosts: docker-2
+  roles:
+    - nginx
+    - homer
+    - portainer
+    - uptime-kuma  
+    - drone/runner
+    - promtail
+
+- hosts: docker-3
+  roles:
+    - grafana
+    - redis
+    - drone/runner
+    - promtail
+
+
+

@@ -1,0 +1,10 @@
+- name: Copy compose
+  ansible.builtin.copy:
+    src: .  
+    dest: /root/nginx
+
+- name: install de nginx
+  community.docker.docker_compose:
+    project_src: /root/nginx
+    state: present
+    recreate: always

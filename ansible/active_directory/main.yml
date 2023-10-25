@@ -1,0 +1,25 @@
+---
+- name: ajouter des ordinateurs au domaine et changer leurs dns
+  hosts: all
+  gather_facts: no
+  vars_files:
+    - vault.yml
+
+  tasks:
+  - name: Set a single address on the adapter named Ethernet
+    ansible.windows.win_dns_client:
+      adapter_names: Ethernet0
+      dns_servers: 
+      - 1.1.1.1
+      - 8.8.8.8
+
+  - name: Add a computer to a domain group
+    community.windows.win_domain_group_membership:
+      name: goupilles
+      members:
+        - SG-WIN10-2$
+        - SG-WIN10-3$
+      state: present
+
+  - ansible.windows.win_reboot:
+    when: domain_state.reboot_required
